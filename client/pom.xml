@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>al.projet</groupId>
+    <artifactId>client</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>client</name>
+    <description>Application client (Swing) de gestion des utilisateurs, via SOAP</description>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <!--
+              Genere les classes Java du client SOAP a partir du WSDL expose
+              par le module soap (le service SOAP doit tourner sur :8082).
+              A activer une fois le service SOAP disponible :
+                mvn org.jvnet.jax-ws-commons:jaxws-maven-plugin:wsimport
+            -->
+            <plugin>
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>2.3.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <wsdlUrls>
+                        <wsdlUrl>http://localhost:8082/ws/utilisateurs.wsdl</wsdlUrl>
+                    </wsdlUrls>
+                    <packageName>al.projet.client.soap</packageName>
+                    <sourceDestDir>${project.build.directory}/generated-sources/wsimport</sourceDestDir>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>al.projet.client.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

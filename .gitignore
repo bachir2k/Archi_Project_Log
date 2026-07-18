@@ -1,0 +1,11 @@
+target/
+*.class
+*.iml
+.idea/
+.vscode/
+*.log
+.DS_Store
+
+~$admap_Projet_Architecture_Logicielle.docx
+Roadmap_Projet_Architecture_Logicielle.docx
+projet.pdf

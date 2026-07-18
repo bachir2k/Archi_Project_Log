@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualités</title>
+</head>
+<body>
+<h1>Derniers articles</h1>
+
+<div th:each="article : ${articles}">
+    <h2><a th:href="@{'/articles/' + ${article.id}}" th:text="${article.titre}">Titre</a></h2>
+    <p th:text="${article.description}">Description</p>
+</div>
+
+<div>
+    <a th:if="${page > 0}" th:href="@{/(page=${page - 1})}">Précédent</a>
+    <a th:if="${hasNext}" th:href="@{/(page=${page + 1})}">Suivant</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://al.projet/soap/utilisateurs"
+           targetNamespace="http://al.projet/soap/utilisateurs"
+           elementFormDefault="qualified">
+
+    <!-- Authentification -->
+    <xs:element name="authentifierRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="login" type="xs:string"/>
+                <xs:element name="motDePasse" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="authentifierResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="role" type="xs:string" minOccurs="0"/>
+                <xs:element name="message" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Lister utilisateurs (protege par jeton) -->
+    <xs:element name="listerUtilisateursRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jeton" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="listerUtilisateursResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="utilisateur" type="tns:utilisateur" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Ajouter utilisateur -->
+    <xs:element name="ajouterUtilisateurRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jeton" type="xs:string"/>
+                <xs:element name="utilisateur" type="tns:utilisateur"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ajouterUtilisateurResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="id" type="xs:long" minOccurs="0"/>
+                <xs:element name="message" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Modifier utilisateur -->
+    <xs:element name="modifierUtilisateurRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jeton" type="xs:string"/>
+                <xs:element name="utilisateur" type="tns:utilisateur"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="modifierUtilisateurResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Supprimer utilisateur -->
+    <xs:element name="supprimerUtilisateurRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="jeton" type="xs:string"/>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="supprimerUtilisateurResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="succes" type="xs:boolean"/>
+                <xs:element name="message" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Type commun -->
+    <xs:complexType name="utilisateur">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="login" type="xs:string"/>
+            <xs:element name="nom" type="xs:string" minOccurs="0"/>
+            <xs:element name="email" type="xs:string" minOccurs="0"/>
+            <xs:element name="role" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
