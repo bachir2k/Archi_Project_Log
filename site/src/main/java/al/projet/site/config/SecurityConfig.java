@@ -20,6 +20,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            // CSRF desactive uniquement sur l'API interne (utile pour tester avec
+            // Postman/curl avant que le formulaire HTML du back-office n'existe).
+            // A retirer si vous appelez cette API depuis vos propres formulaires
+            // Thymeleaf, qui embarquent deja le jeton CSRF automatiquement.
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/editeur/api/**", "/admin/api/**"))
             .authorizeHttpRequests(auth -> auth
                 // consultation publique : accueil, detail article, categories
                 .requestMatchers("/", "/articles/**", "/categories/**", "/css/**", "/js/**").permitAll()
@@ -29,10 +34,11 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .permitAll()
-            )
+            // Pas de loginPage() personnalisee pour l'instant -> Spring Security
+            // fournit un formulaire de login par defaut sur /login, utilisable
+            // tel quel pour tester l'authentification avant que le template
+            // Thymeleaf de login (prevu jeudi/vendredi) ne soit pret.
+            .formLogin(form -> form.permitAll())
             .logout(logout -> logout.permitAll());
 
         return http.build();
