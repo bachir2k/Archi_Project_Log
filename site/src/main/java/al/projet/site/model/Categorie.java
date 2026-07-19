@@ -16,6 +16,7 @@ public class Categorie {
     private String nom;
 
     @Lob
+    @Column(length = 65535)
     private String description;
 
     @OneToMany(mappedBy = "categorie")
