@@ -12,6 +12,7 @@ public class Categorie {
     @Column(length = 100)
     private String nom;
     @Lob
+    @Column(length = 65535)
     private String description;
 
     public Long getId() { return id; }
