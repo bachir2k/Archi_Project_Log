@@ -11,13 +11,14 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     private String titre;
 
+    @Column(length = 500)
     private String description; // resume pour la liste
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, length = 65535)
     private String contenu;
 
     @Column(name = "date_publication")

@@ -17,16 +17,18 @@ public class UtilisateurEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     private String login;
 
-    @Column(name = "mot_de_passe", nullable = false)
+    @Column(name = "mot_de_passe", nullable = false, length = 255)
     private String motDePasse; // hash BCrypt
 
+    @Column(length = 100)
     private String nom;
+    @Column(length = 150)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String role; // VISITEUR / EDITEUR / ADMIN
 
     @Column(name = "date_creation")

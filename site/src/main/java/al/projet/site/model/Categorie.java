@@ -12,9 +12,10 @@ public class Categorie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 100)
     private String nom;
 
+    @Lob
     private String description;
 
     @OneToMany(mappedBy = "categorie")

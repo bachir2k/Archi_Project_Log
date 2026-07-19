@@ -9,7 +9,9 @@ public class Categorie {
     @Id
     private Long id;
 
+    @Column(length = 100)
     private String nom;
+    @Lob
     private String description;
 
     public Long getId() { return id; }
