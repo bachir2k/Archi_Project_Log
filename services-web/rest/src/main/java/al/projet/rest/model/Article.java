@@ -10,10 +10,13 @@ public class Article {
     @Id
     private Long id;
 
+    @Column(length = 200)
     private String titre;
+    @Column(length = 500)
     private String description;
 
     @Lob
+    @Column(length = 65535)
     private String contenu;
 
     @Column(name = "date_publication")
