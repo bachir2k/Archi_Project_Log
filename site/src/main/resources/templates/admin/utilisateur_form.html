@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${modeCreation} ? 'Nouvel utilisateur' : 'Modifier utilisateur'">Utilisateur</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<main class="conteneur">
+    <a th:href="@{/admin/utilisateurs}" class="lien-retour">← Retour a la liste</a>
+
+    <h1 th:text="${modeCreation} ? 'Nouvel utilisateur' : 'Modifier l\'utilisateur'">Utilisateur</h1>
+
+    <p th:if="${erreur}" th:text="${erreur}" class="message-erreur">Erreur</p>
+    <p th:if="${succes}" th:text="${succes}" class="message-succes">Succes</p>
+
+    <form th:action="${modeCreation} ? @{/admin/utilisateurs} : @{'/admin/utilisateurs/' + ${id}}"
+          th:object="${form}" method="post">
+
+        <div class="form-champ">
+            <label for="login">Login</label>
+            <input type="text" id="login" th:field="*{login}" th:readonly="${!modeCreation}">
+            <p class="erreur" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Erreur login</p>
+        </div>
+
+        <div class="form-champ">
+            <label for="motDePasse">
+                Mot de passe
+                <span th:unless="${modeCreation}">(laisser vide pour ne pas changer)</span>
+            </label>
+            <input type="password" id="motDePasse" th:field="*{motDePasse}">
+        </div>
+
+        <div class="form-champ">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" th:field="*{nom}">
+        </div>
+
+        <div class="form-champ">
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}">
+        </div>
+
+        <div class="form-champ">
+            <label for="role">Role</label>
+            <select id="role" th:field="*{role}">
+                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}">ROLE</option>
+            </select>
+        </div>
+
+        <button type="submit" class="bouton" th:text="${modeCreation} ? 'Creer' : 'Enregistrer'">Enregistrer</button>
+    </form>
+
+    <!-- Gestion des jetons : uniquement en edition (il faut que l'utilisateur existe deja) -->
+    <section th:unless="${modeCreation}" style="margin-top:36px;">
+        <h2>Jetons d'authentification</h2>
+        <p>Ces jetons donnent acces au service SOAP de gestion des utilisateurs.</p>
+
+        <form th:action="@{'/admin/utilisateurs/' + ${id} + '/jetons'}" method="post" style="margin-bottom:16px;">
+            <button type="submit" class="bouton">+ Generer un nouveau jeton</button>
+        </form>
+
+        <table class="tableau-admin">
+            <thead>
+            <tr>
+                <th>Valeur</th>
+                <th>Cree le</th>
+                <th>Actif</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="jeton : ${jetons}">
+                <td th:text="${jeton.valeur}" style="font-family: monospace; font-size:0.8rem;">valeur</td>
+                <td th:text="${#temporals.format(jeton.dateCreation, 'dd/MM/yyyy HH:mm')}">date</td>
+                <td th:text="${jeton.actif} ? 'Oui' : 'Non'">actif</td>
+                <td>
+                    <form th:action="@{'/admin/utilisateurs/' + ${id} + '/jetons/' + ${jeton.id} + '/supprimer'}"
+                          method="post" onsubmit="return confirm('Revoquer ce jeton ?');">
+                        <button type="submit" class="bouton bouton--danger" style="padding:2px 8px;font-size:0.8rem;">Revoquer</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(jetons)}">
+                <td colspan="4" class="vide">Aucun jeton pour cet utilisateur.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+</body>
+</html>

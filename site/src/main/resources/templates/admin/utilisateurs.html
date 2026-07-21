@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des utilisateurs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<main class="conteneur">
+    <h1>Gestion des utilisateurs</h1>
+
+    <p th:if="${succes}" th:text="${succes}" class="message-succes">Succes</p>
+
+    <p><a th:href="@{/admin/utilisateurs/nouveau}" class="bouton">+ Nouvel utilisateur</a></p>
+
+    <table class="tableau-admin">
+        <thead>
+        <tr>
+            <th>Login</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${utilisateurs}">
+            <td th:text="${u.login}">login</td>
+            <td th:text="${u.nom}">Nom</td>
+            <td th:text="${u.email}">email</td>
+            <td th:text="${u.role}">ROLE</td>
+            <td class="actions-ligne">
+                <a th:href="@{'/admin/utilisateurs/' + ${u.id} + '/modifier'}">Modifier</a>
+                <form th:action="@{'/admin/utilisateurs/' + ${u.id} + '/supprimer'}" method="post"
+                      onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                    <button type="submit" class="bouton bouton--danger" style="padding:2px 8px;font-size:0.8rem;">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
