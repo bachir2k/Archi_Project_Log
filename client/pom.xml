@@ -22,12 +22,26 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.1</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <mainClass>al.projet.client.Main</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <!--
+              Permet de lancer l'appli directement avec :
+                mvn compile exec:java
+              (mainClass deja configure, pas besoin de -Dexec.mainClass=...)
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <mainClass>al.projet.client.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
