@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des articles</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<main class="conteneur">
+    <h1>Gestion des articles</h1>
+
+    <p th:if="${succes}" th:text="${succes}" class="message-succes">Succes</p>
+
+    <p><a th:href="@{/editeur/articles/nouveau}" class="bouton">+ Nouvel article</a></p>
+
+    <table class="tableau-admin">
+        <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Categorie</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${articles}">
+            <td th:text="${a.titre}">Titre</td>
+            <td th:text="${a.categorie != null ? a.categorie.nom : '—'}">Categorie</td>
+            <td th:text="${#temporals.format(a.datePublication, 'dd/MM/yyyy')}">date</td>
+            <td class="actions-ligne">
+                <a th:href="@{'/articles/' + ${a.id}}" target="_blank">Voir</a>
+                <a th:href="@{'/editeur/articles/' + ${a.id} + '/modifier'}">Modifier</a>
+                <form th:action="@{'/editeur/articles/' + ${a.id} + '/supprimer'}" method="post"
+                      onsubmit="return confirm('Supprimer cet article ?');">
+                    <button type="submit" class="bouton bouton--danger" style="padding:2px 8px;font-size:0.8rem;">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(articles)}">
+            <td colspan="4" class="vide">Aucun article.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav class="pagination">
+        <a th:if="${page > 0}" th:href="@{/editeur/articles(page=${page - 1})}">← Précédent</a>
+        <a th:if="${hasNext}" th:href="@{/editeur/articles(page=${page + 1})}">Suivant →</a>
+    </nav>
+</main>
+
+</body>
+</html>
