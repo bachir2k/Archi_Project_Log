@@ -26,10 +26,6 @@ public class ArticleService {
         return articleRepository.findAllByOrderByDatePublicationDesc(pageable);
     }
 
-    public Page<Article> listerParCategorie(Long categorieId, Pageable pageable) {
-        return articleRepository.findByCategorieIdOrderByDatePublicationDesc(categorieId, pageable);
-    }
-
     public Article trouver(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Article introuvable : " + id));
