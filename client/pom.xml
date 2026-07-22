@@ -19,29 +19,40 @@
 
     <build>
         <plugins>
+            <!--
+              Genere les classes Java du client SOAP a partir du WSDL expose
+              par le module soap (le service SOAP doit tourner sur :8082).
+              A activer une fois le service SOAP disponible :
+                mvn org.jvnet.jax-ws-commons:jaxws-maven-plugin:wsimport
+            -->
+            <plugin>
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>2.3.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <wsdlUrls>
+                        <wsdlUrl>http://localhost:8082/ws/utilisateurs.wsdl</wsdlUrl>
+                    </wsdlUrls>
+                    <packageName>al.projet.client.soap</packageName>
+                    <sourceDestDir>${project.build.directory}/generated-sources/wsimport</sourceDestDir>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.1</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <mainClass>al.projet.client.Main</mainClass>
                         </manifest>
                     </archive>
-                </configuration>
-            </plugin>
-            <!--
-              Permet de lancer l'appli directement avec :
-                mvn compile exec:java
-              (mainClass deja configure, pas besoin de -Dexec.mainClass=...)
-            -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <mainClass>al.projet.client.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

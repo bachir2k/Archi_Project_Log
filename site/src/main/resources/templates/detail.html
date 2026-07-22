@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${article.titre}">Article</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<main class="conteneur">
+    <a th:href="@{/}" class="lien-retour">← Retour aux articles</a>
+
+    <article class="article-detail">
+        <h1 th:text="${article.titre}">Titre de l'article</h1>
+        <p class="meta">
+            <span th:if="${article.categorieNom}" th:text="${article.categorieNom}">Categorie</span>
+            <span th:if="${article.auteurLogin}" th:text="'par ' + ${article.auteurLogin}">Auteur</span>
+        </p>
+        <div class="contenu" th:utext="${article.contenu}">Contenu de l'article...</div>
+    </article>
+</main>
+
+</body>
+</html>
