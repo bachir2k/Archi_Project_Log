@@ -34,12 +34,13 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
-            // Pas de loginPage() personnalisee pour l'instant -> Spring Security
-            // fournit un formulaire de login par defaut sur /login, utilisable
-            // tel quel pour tester l'authentification avant que le template
-            // Thymeleaf de login (prevu jeudi/vendredi) ne soit pret.
-            .formLogin(form -> form.permitAll())
-            .logout(logout -> logout.permitAll());
+            // Page de login personnalisee : templates/login.html (via PublicController),
+            // avec le header/nav du site. loginPage("/login") desactive la page
+            // par defaut generee par Spring Security.
+            .formLogin(form -> form.loginPage("/login").permitAll())
+            .logout(logout -> logout
+                .logoutSuccessUrl("/")
+                .permitAll());
 
         return http.build();
     }

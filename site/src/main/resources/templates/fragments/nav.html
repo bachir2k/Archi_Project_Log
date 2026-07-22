@@ -12,17 +12,18 @@
         <a th:each="cat : ${listeCategoriesNav}" th:href="@{'/categories/' + ${cat.id}}" th:text="${cat.nom}">Categorie</a>
     </nav>
    <div class="site-nav__compte" style="display: flex; align-items: center; gap: 15px;">
-        <span sec:authorize="isAuthenticated()" class="site-nav__utilisateur">
-            Connecte : <span sec:authentication="name">login</span>
-        </span>
-        
-        <!-- Dropdown Administration sans CSS externe -->
-        <div sec:authorize="isAuthenticated()" 
+       
+       <!-- Dropdown Administration sans CSS externe -->
+       <div sec:authorize="isAuthenticated()" 
              onmouseenter="this.querySelector('.dropdown-admin').style.display='flex'" 
              onmouseleave="this.querySelector('.dropdown-admin').style.display='none'" 
              style="position: relative; display: inline-block;">
+      
+      <span sec:authorize="isAuthenticated()" class="site-nav__utilisateur">
+           Connecte : <span sec:authentication="name">login</span>
+           <span style="cursor: pointer; padding: 10px;">▼</span>
+       </span>
             
-            <span style="cursor: pointer; padding: 10px;">User ▼</span>
             
             <div class="dropdown-admin" style="display: none; position: absolute; top: 100%; right: 0; flex-direction: column; background: #111726; border: 1px solid #1e293b; padding: 10px; z-index: 1000; min-width: 180px; gap: 8px;">
                 <a sec:authorize="hasAnyRole('EDITEUR','ADMIN')" th:href="@{/editeur/articles}">Gerer les articles</a>
@@ -35,8 +36,28 @@
         <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="site-nav__logout-form" style="margin: 0;">
             <button type="submit" style="cursor: pointer;">Se deconnecter</button>
         </form>
-        
+
+        <button sec:authorize="!isAuthenticated()" style="color: white; width: 150px; font-size:1.2em;  background-color: #194c82; padding: 10px; text-decoration: none;border:none; border-radius: 5pc;" >
+            <a th:href="@{/login}" style="color: inherit; text-decoration: inherit;">Se connecter</a>
+        </button>
+
     </div>
+    
 </header>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+ <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="site-nav__logout-form" style="margin: 0;">
+            <button type="submit" style="cursor: pointer;">Se deconnecter</button>
+        </form>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
