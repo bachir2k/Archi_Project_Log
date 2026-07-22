@@ -22,6 +22,10 @@ public class ArticleService {
         this.categorieRepository = categorieRepository;
     }
 
+    public Page<Article> listerParCategorie(Long categorieId, Pageable pageable) {
+    return articleRepository.findByCategorieIdOrderByDatePublicationDesc(categorieId, pageable);
+}
+
     public Page<Article> lister(Pageable pageable) {
         return articleRepository.findAllByOrderByDatePublicationDesc(pageable);
     }

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+ 
 <body>
-<header th:fragment="nav" class="site-nav">
+<header th:fragment="nav" class="site-nav" style="min-height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
+
     <div class="site-nav__brand">
         <a th:href="@{/}">Actualités</a>
     </div>
@@ -9,17 +11,31 @@
         <a th:href="@{/}">Toutes</a>
         <a th:each="cat : ${listeCategoriesNav}" th:href="@{'/categories/' + ${cat.id}}" th:text="${cat.nom}">Categorie</a>
     </nav>
-    <div class="site-nav__compte">
+   <div class="site-nav__compte" style="display: flex; align-items: center; gap: 15px;">
         <span sec:authorize="isAuthenticated()" class="site-nav__utilisateur">
             Connecte : <span sec:authentication="name">login</span>
         </span>
-        <a sec:authorize="hasAnyRole('EDITEUR','ADMIN')" th:href="@{/editeur/articles}">Gerer les articles</a>
-        <a sec:authorize="hasAnyRole('EDITEUR','ADMIN')" th:href="@{/editeur/categories}">Gerer les categories</a>
-        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/utilisateurs}">Gerer les utilisateurs</a>
-        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="site-nav__logout-form">
-            <button type="submit">Se deconnecter</button>
+        
+        <!-- Dropdown Administration sans CSS externe -->
+        <div sec:authorize="isAuthenticated()" 
+             onmouseenter="this.querySelector('.dropdown-admin').style.display='flex'" 
+             onmouseleave="this.querySelector('.dropdown-admin').style.display='none'" 
+             style="position: relative; display: inline-block;">
+            
+            <span style="cursor: pointer; padding: 10px;">User ▼</span>
+            
+            <div class="dropdown-admin" style="display: none; position: absolute; top: 100%; right: 0; flex-direction: column; background: #111726; border: 1px solid #1e293b; padding: 10px; z-index: 1000; min-width: 180px; gap: 8px;">
+                <a sec:authorize="hasAnyRole('EDITEUR','ADMIN')" th:href="@{/editeur/articles}">Gerer les articles</a>
+                <a sec:authorize="hasAnyRole('EDITEUR','ADMIN')" th:href="@{/editeur/categories}">Gerer les categories</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/utilisateurs}">Gerer les utilisateurs</a>
+            </div>
+            
+        </div>
+
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="site-nav__logout-form" style="margin: 0;">
+            <button type="submit" style="cursor: pointer;">Se deconnecter</button>
         </form>
-        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
+        
     </div>
 </header>
 </body>
