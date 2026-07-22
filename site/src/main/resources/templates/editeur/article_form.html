@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${modeCreation} ? 'Nouvel article' : 'Modifier article'">Article</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<main class="conteneur">
+    <a th:href="@{/editeur/articles}" class="lien-retour">← Retour a la liste</a>
+
+    <h1 th:text="${modeCreation} ? 'Nouvel article' : 'Modifier l\'article'">Article</h1>
+
+    <p th:if="${erreur}" th:text="${erreur}" class="message-erreur">Erreur</p>
+
+    <form th:action="${modeCreation} ? @{/editeur/articles} : @{'/editeur/articles/' + ${id}}"
+          th:object="${form}" method="post">
+
+        <div class="form-champ">
+            <label for="titre">Titre</label>
+            <input type="text" id="titre" th:field="*{titre}">
+            <p class="erreur" th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}">Erreur</p>
+        </div>
+
+        <div class="form-champ">
+            <label for="description">Description (resume affiche sur la liste)</label>
+            <input type="text" id="description" th:field="*{description}">
+        </div>
+
+        <div class="form-champ">
+            <label for="categorieId">Categorie</label>
+            <select id="categorieId" th:field="*{categorieId}">
+                <option value="">— Aucune —</option>
+                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.nom}">Categorie</option>
+            </select>
+        </div>
+
+        <div class="form-champ">
+            <label for="contenu">Contenu</label>
+            <textarea id="contenu" th:field="*{contenu}" rows="12" style="width:100%; padding:8px; font-family: inherit;"></textarea>
+            <p class="erreur" th:if="${#fields.hasErrors('contenu')}" th:errors="*{contenu}">Erreur</p>
+        </div>
+
+        <button type="submit" class="bouton" th:text="${modeCreation} ? 'Publier' : 'Enregistrer'">Enregistrer</button>
+    </form>
+</main>
+
+</body>
+</html>

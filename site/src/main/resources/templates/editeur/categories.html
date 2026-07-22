@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des categories</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<main class="conteneur">
+    <h1>Gestion des categories</h1>
+
+    <p th:if="${succes}" th:text="${succes}" class="message-succes">Succes</p>
+
+    <p><a th:href="@{/editeur/categories/nouveau}" class="bouton">+ Nouvelle categorie</a></p>
+
+    <table class="tableau-admin">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${categories}">
+            <td th:text="${c.nom}">Nom</td>
+            <td th:text="${c.description}">Description</td>
+            <td class="actions-ligne">
+                <a th:href="@{'/categories/' + ${c.id}}" target="_blank">Voir</a>
+                <a th:href="@{'/editeur/categories/' + ${c.id} + '/modifier'}">Modifier</a>
+                <form th:action="@{'/editeur/categories/' + ${c.id} + '/supprimer'}" method="post"
+                      onsubmit="return confirm('Supprimer cette categorie ? Les articles associes ne seront pas supprimes.');">
+                    <button type="submit" class="bouton bouton--danger" style="padding:2px 8px;font-size:0.8rem;">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(categories)}">
+            <td colspan="3" class="vide">Aucune categorie.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>

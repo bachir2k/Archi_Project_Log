@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${modeCreation} ? 'Nouvelle categorie' : 'Modifier categorie'">Categorie</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<main class="conteneur">
+    <a th:href="@{/editeur/categories}" class="lien-retour">← Retour a la liste</a>
+
+    <h1 th:text="${modeCreation} ? 'Nouvelle categorie' : 'Modifier la categorie'">Categorie</h1>
+
+    <form th:action="${modeCreation} ? @{/editeur/categories} : @{'/editeur/categories/' + ${id}}"
+          th:object="${form}" method="post">
+
+        <div class="form-champ">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" th:field="*{nom}">
+            <p class="erreur" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}">Erreur</p>
+        </div>
+
+        <div class="form-champ">
+            <label for="description">Description</label>
+            <textarea id="description" th:field="*{description}" rows="4" style="width:100%; padding:8px; font-family: inherit;"></textarea>
+        </div>
+
+        <button type="submit" class="bouton" th:text="${modeCreation} ? 'Creer' : 'Enregistrer'">Enregistrer</button>
+    </form>
+</main>
+
+</body>
+</html>

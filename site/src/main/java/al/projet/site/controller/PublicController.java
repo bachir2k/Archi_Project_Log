@@ -43,6 +43,11 @@ public class PublicController {
         return "accueil";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/articles/{id}")
     public String detail(@PathVariable Long id, Model model) {
         model.addAttribute("article", ArticleDto.from(articleService.trouver(id)));
